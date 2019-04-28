@@ -1,0 +1,501 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Quando la tua applicazione Django non va abbastanza veloce</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/simple.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/foundation.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<style>
+			.reveal .slides {
+				word-break: break-word;
+				text-align: left;
+			}
+			.reveal .slides .center {
+				text-align: center;
+			}
+			.reveal section * {
+				font-weight: 800;
+			}
+			.list-none li {
+				list-style-type: none;
+			}
+			.list-plus {
+				list-style-type: '+ ';
+			}
+			.list-minus {
+				list-style-type: '- ';
+			}
+			.reveal section img {
+				border: none;
+				box-shadow: none;
+			}
+			.reveal section.wall img {
+				margin: 0;
+			}
+			.footer {
+				height: 10%;
+				width: 100%;
+				position: absolute;
+				bottom: 40px;
+				display: block;
+				text-align: center;
+			}
+			#hashtag {
+				font-size: 0.8em;
+				font-weight: 400;
+			}
+			.selected {
+				background-color: #000;
+				color: #fff;
+			}
+			.small {
+				font-size: 0.6em;
+			}
+			.reveal pre {
+				font-size: 0.8em;
+			}
+			.reveal pre.noborder {
+				border: none;
+			}
+			.reveal h2.upper {
+				text-transform: uppercase;
+			}
+			@media print {
+				.no-print { display: none; }
+			}
+			@media screen {
+				.only-print { display: none; }
+			}
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h2>Quando la tua<br>applicazione Django<br>non va abbastanza veloce</h2>
+					<br /><br />
+					<h3>Riccardo Magliocchetti</h3>
+				</section>
+				<section>
+					<h2>whoami</h2>
+					<p>Software developer @ Maieutical Labs</p>
+					<p>Consultant</p>
+					<p>OSS contributor</p>
+				</section>
+				<section>
+					<h2>Ridiculously fast</h2>
+					<p>Django was designed to help developers take applications from concept to completion as quickly as possible.</p>
+					<p><em>www.djangoproject.com</em></p>
+				</section>
+				<section>
+					<h2>La mia esperienza</h2>
+					<p>Ottimizzazioni di <span class="selected">piccoli e medi</span> progetti Django in <span class="selected">piccoli</span> team</p>
+				</section>
+				<section>
+					<h2 class="upper">Due regole per ottimizzare</h2>
+				</section>
+				<section>
+					<ol>
+						<li><h2>Don't do it</h2></li>
+					</ol>
+				</section>
+				<section>
+					<ol>
+						<li>Don't do it.</li>
+						<li><h2>(for experts only)<br> Don't do it yet.</h2></li>
+					</ol>
+				</section>
+				<section>
+					<ol>
+						<li>Don't do it.</li>
+						<li>(for experts only) Don't do it yet.<br><span class="selected">Not until you have a perfectly clear and unoptimized solution</span>.</li>
+					</ol>
+					<p>Michael A. Jackson<br><em>Principles of Program Design, 1975</em></p>
+				</section>
+				<section>
+					<h2>Hai raggiunto<br> il product/market fit?</h2>
+				</section>
+				<section>
+					<h2>Quando pensare alle performance</h2>
+					<p><em>Idealmente</em> prima di andare in produzione</p>
+					<p>Code review: <em>Quante query fa questo endpoint?</em></p>
+				</section>
+				<section>
+					<h2>&#x1F465; <em>questa URL è lenta</em></h2>
+					<h2>Clienti insoddisfatti &#x2192; &#x1F4B8;</h2>
+				</section>
+				<section>
+					<h2>&#x1F916; uso <em>troppa</em> RAM</h2>
+					<h2>Risorse sprecate &#x2192; &#x1F4B8;</h2>
+				</section>
+				<section>
+					<h2 class="upper">Come si ottimizza?</h2>
+				</section>
+				<section>
+					<h2>Fare meno lavoro #1</h2>
+					<p>Il codice sta facendo qualcosa che non serve</p>
+				</section>
+				<section>
+					<h2>Fare meno lavoro #2</h2>
+					<p>Migliore algoritmo o struttura dati</p>
+					<p>&#x1F4DA; High Performance Python, <em>Ian Ozsvald, Micha Gorelick</em></p>
+				</section>
+				<section>
+					<h2 class="upper">Misura prima di ottimizzare</h2>
+				</section>
+				<section>
+					<h2>Monitoring</h2>
+					<p>SaaS: Datadog, New Relic, Elastic APM, etc...</p>
+					<p>Prometheus, talk Pycon9 @davidesetti</p>
+				</section>
+				<section>
+					<h2 class="upper">Misurare richieste lente</h2>
+				</section>
+				<section>
+					<h2>jazzband/django-silk</h2>
+					<!-- FIXME: link repo -->
+					<p>Profilazione e introspezione di richieste</p>
+					<p>Online, non in produzione</p>
+				</section>
+                                <section class="center">
+					<h2>Dashboard richieste</h2>
+                                        <img src="assets/django-silk.png" />
+                                </section>
+				<section class="center"> 
+					<h2>Query per richiesta</h2>
+                                        <img src="assets/django-silk-sql-queries.png" />
+                                </section>
+                                <section class="center">
+					<h2>SQL query<h2>
+                                        <img src="assets/django-silk-sql-query.png" />
+                                </section>
+				<section>
+					<h2>piglei/uwsgi-sloth</h2>
+					<!-- FIXME: link repo -->
+					<p>Analizza richieste lente dai log</p>
+					<p>Offline, per uWSGI</p>
+					<p>Attenzione alla media!</p>
+				</section>
+                                <section class="center">
+                                        <img src="assets/uwsgi-sloth.png" />
+                                </section>
+				<section>
+					<h2 class="upper">Misurare <br>consumo memoria</h2>
+				</section>
+				<section>
+					<h2>xrmx/pyuwsgimemhog</h2>
+					<!-- FIXME: link repo -->
+					<p>Trova viste con possibili memory leak dai log</p>
+					<p>Offline, per uWSGI</p>
+				</section>
+				<section>
+					<h2>Come ottimizzare in pratica</h2>
+					<ol>
+						<li>Fare un database fatto bene</li>
+						<li>Fare meno query</li>
+						<li>Fare query meno costose</li>
+						<li>Fare meno lavoro inutile</li>
+					</ol>
+				</section>
+				<section>
+					<h2>Un database</h2>
+					<pre class="noborder">
+User
+  &lt;- Profile
+    &lt;- Specific profile
+      &lt;- Specific Django reusable app profile</pre>
+				</section>
+				<section>
+					<h2>Un database più veloce</h2>
+					<pre class="noborder">
+Custom User
+  &lt;- Specific profile
+  &lt;- Specific Django reusable app profile</pre>
+				</section>
+				<section>
+					<h2>L'ereditarietà concreta dei modelli Django è una trappola</h2>
+					<p>Usa quella astratta o esplicitamente una relazione</p>
+				</section>
+				<section>
+					<h2 class="upper">Query</h2>
+				</section>
+				<section>
+					<h2>Prendere solo quello che serve</h2>
+					<p><code>values()</code> e <code>values_list()</code></p>
+				</section>
+				<section>
+					<h2>Salvare solo quello che serve</h2>
+					<pre><code data-trim data-noescape class="diff">
+-    punteggio.save()
++    punteggio.save(update_fields=['punti'])
+					</code></pre>
+				</section>
+				<section>
+					<h2>Le query N + 1 uccidono le performance dell'applicazione</h2>
+				</section>
+				<section>
+					<h2></h2>
+					<pre><code data-trim data-noescape class="python">
+class Room:
+    building = models.ForeignKey(Building)
+
+class Appointment:
+    room = models.ForeignKey(Room)
+    doctor = models.ForeignKey(Doctor)
+					</code></pre>
+					<pre><code data-noescape class="diff">
+a = Appointment.objects.get(
+    id=appointment_id
+)
+print('In {} with {}'.format(a.room, a.doctor))
+					</code></pre>
+				</section>
+				<section>
+					<h2>Per evitare query N + 1</h2>
+					<ul>
+						<li><code>select_related()</code>, JOIN in SQL</li>
+						<li><code>prefetch_related()</code>, join in Python</li>
+					</ul>
+				</section>
+				<section>
+					<h2>select_related()</h2>
+					<pre><code data-trim data-noescape class="python">
+class Room:
+    building = models.ForeignKey(Building)
+
+class Appointment:
+    room = models.ForeignKey(Room)
+    doctor = models.ForeignKey(Doctor)
+					</code></pre>
+					<pre><code data-noescape class="diff">
+    appointment = Appointment.objects.get(
+        id=appointment_id
++   ).select_related(
++       'doctor', 'room__building'
+    )
+					</code></pre>
+				</section>
+				<section>
+					<h2>select_related() è greedy</h2>
+					<pre><code data-noescape class="diff">
++  ).select_related(
++      'doctor', 'room__building'
+   )             ^^^^^^^^^^^^^^^^
+					</code></pre>
+					<p>SELECT * in JOIN: doctor, <span class="selected">room</span> e building</p>
+				</section>
+				<section>
+					<h2>Attenzione a select_related()</h2>
+					<ul>
+						<li>L'admin se nel <code>list_display</code> c'è <span class="selected">un solo campo</span> preso da una relazione seleziona <span class="selected">tutti i modelli delle relazioni</span> </li>
+						<li>Memory leak in django 1.11?</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Attenzione alle librerie</h2>
+					<pre><code data-trim data-noescape class="diff">
+children = ListField(
+     child=RecursiveField(),
+-    source='children.all'
++    source='get_children'
+)
+					</code></pre>
+				</section>
+				<section>
+					<h2>Attenzione alle librerie</h2>
+					<pre><code data-trim data-noescape class="nohighlight">
+Do less work in MySerializer
+
+Use django-mptt get_children method instead of
+going straight to the field model.
+
+/myapi/ does 40% less queries
+					</code></pre>
+				</section>
+				<section>
+					<h2>Il numero di query è testabile</h2>
+					<p><code>django.test.TransactionTestCase.assertNumQueries()</code></p>
+					<pre><code data-trim data-noescape class="python">
+with self.assertNumQueries(2):
+    Person.objects.create(name="Aaron")
+    Person.objects.create(name="Daniel")
+					</code></pre>
+				</section>
+				<section>
+					<h2 class="upper">Indici</h2>
+				</section>
+				<section>
+					<h2>Indici: se filtriamo o ordiniamo</h2>
+					<pre><code data-trim data-noescape class="diff">
+-    complete = models.BooleanField(default=False)
++    complete = models.BooleanField(
++        default=False,
++        db_index=True
++    )
+					</code></pre>
+				</section>
+				<section>
+					<h2>Ordinare non è gratis</h2>
+					<pre><code data-trim data-noescape class="diff">
+  class MyAdmin:
+     readonly_fields = ['creation_ts']
+-    ordering = ['creation_ts',]
+					</code></pre>
+					<pre><code data-trim data-noescape class="nohighlight">
+Remove unuseful ordering in MyAdmin
+
+Ordering a timestamp without indexes is sloooooow.
+Now the query takes 30 seconds less!
+					</code></pre>
+				</section>
+				<section>
+					<h2>Gli indici non sono gratis</h2>
+					<pre><code data-trim data-noescape class="python">
+class MyModel:
+    elements = models.ManyToManyField(Element)
+					</code></pre>
+					<h3>Indici nella tabella di join:</h3>
+					<ol>
+						<li>PK</li>
+						<li>FK verso MyModel </li>
+						<li>FK verso Element</li>
+						<li>UNIQUE sulle FK</li>
+					</ol>
+				</section>
+				<section>
+					<h2>Gli indici ci servono sempre?</h2>
+					<pre><code data-trim data-noescape class="diff">
+-    elements = models.ManyToManyField(Element)
++    # Be aware we don't have indexes here
++    elements = ArrayField(
++        models.IntegerField(),
++        default=[],
++        blank=True
++    )
+					</code></pre>
+				</section>
+				<section>
+					<h2>Se gli indici non ci servono</h2>
+					<pre><code data-trim data-noescape class="nohighlight">
+Use an array field for MyContainer elements
+
+Instead of using an m2m. We don't need the field
+for the application, we need it for analytics.
+
+This let us save 2GB from tables and indexes.
+					</code></pre>
+				</section>
+
+				<section>
+					<h2 class="upper">Serializzatori</h2>
+				</section>
+				<section>
+					<h2>Usare il serializzatore giusto</h2>
+					<pre><code data-trim data-noescape class="diff">
+class MySerializer(serializers.ModelSerializer):
+-    owner = UserSerializer()
++    owner = serializers.IntegerField(
++        read_only=True
++    )
+					</code></pre>
+				</section>
+				<section>
+					<h2>Esplicito meglio di implicito #1</h2>
+					<pre><code data-trim data-noescape class="python">
+class MySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MyModel
+        fields = '__all__'
+					</code></pre>
+				</section>
+				<section>
+					<h2>Esplicito meglio di implicito #2</h2>
+					<pre><code data-trim data-noescape class="python">
+class MySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MyModel
+        exclude = ('owner',)
+					</code></pre>
+				</section>
+				<section>
+					<h2>Non usare i ModelSerializer<br> per serializzare</h2>
+				</section>
+				<section>
+					<h2>Il context ti è amico</h2>
+					<pre><code data-trim data-noescape class="diff">
+  class MySerializer:
+-    title = serializers.CharField(
+-         source='assignment.task.title'
+-    )
++    title = serializers.SerializerMethodField()
+
++    def get_title(self, obj):
++        titles = self.context.get('titles')
++        return titles[obj.assignment_id]
+					</code></pre>
+					<p><code>select_related()</code> e <code>prefetch_related()</code><br> sarebbero state dispendiose</p>
+				</section>
+				<section>
+					<h2>Altre cose da guardare</h2>
+					<ul>
+					<li><code>defer()</code> e <code>only()</code></li>
+					<li><code>aggregate()</code>, <code>annotate()</code></li>
+					<li><em>Database functions</em> e la documentazione del Database</li>
+					<li><code>FilteredRelation()</code> django &ge; 2</li>
+					<li><code>EXPLAIN</code></li>
+					</ul>
+				</section>
+				<section>
+					<h2>Conclusioni</h2>
+					<ul>
+					<li>Misura prima di <em>eventualmente</em> ottimizzare</li>
+					<li>Pensa alle performance</li>
+					<li>Piccoli cambiamenti possono dare grandi risultati</li>
+					<li>Conoscere SQL aiuta</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Grazie! Domande?</h2>
+					<p></p>
+					<p><a href="https://github.com/xrmx">github.com/xrmx</a></p>
+					<p><a href="https://speakerdeck.com/xrmx">speakerdeck.com/xrmx</a></p>
+					<p class="only-print"><a href="https://twitter.com/rmistaken">@rmistaken</a></p>
+				</section>
+			</div>
+			<div class="footer">
+				<p id="hashtag" class="no-print">#PyconX ‧ @rmistaken</p>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: false,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
