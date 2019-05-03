@@ -148,11 +148,11 @@
 					<h2 class="upper">Come si ottimizza?</h2>
 				</section>
 				<section>
-					<h2>Fare meno lavoro #1</h2>
+					<h2>Fare meno lavoro</h2>
 					<p>Il codice sta facendo qualcosa che non serve</p>
 				</section>
 				<section>
-					<h2>Fare meno lavoro #2</h2>
+					<h2>Far meglio</h2>
 					<p>Migliore algoritmo o struttura dati</p>
 					<p>&#x1F4DA; High Performance Python, <em>Ian Ozsvald, Micha Gorelick</em></p>
 				</section>
@@ -163,6 +163,9 @@
 					<h2>Monitoring</h2>
 					<p>SaaS: Datadog, New Relic, Elastic APM, etc...</p>
 					<p>Prometheus, talk Pycon9 @davidesetti</p>
+				</section>
+				<section>
+					<h2 class="upper">Tool Open Source<h2>
 				</section>
 				<section>
 					<h2 class="upper">Misurare richieste lente</h2>
@@ -242,8 +245,8 @@ Custom User
 				<section>
 					<h2>Salvare solo quello che serve</h2>
 					<pre><code data-trim data-noescape class="diff">
--    punteggio.save()
-+    punteggio.save(update_fields=['punti'])
+-    score.save()
++    score.save(update_fields=['points'])
 					</code></pre>
 				</section>
 				<section>
@@ -284,12 +287,12 @@ class Appointment:
     doctor = models.ForeignKey(Doctor)
 					</code></pre>
 					<pre><code data-noescape class="diff">
-    appointment = Appointment.objects.get(
-        id=appointment_id
-+   ).select_related(
-+       'doctor', 'room__building'
-    )
-					</code></pre>
+-  a = Appointment.objects.get(
++  a = Appointment.objects.select_related(
++      'doctor', 'room__building'
+   ).get(
+       id=appointment_id
+   )</code></pre>
 				</section>
 				<section>
 					<h2>select_related() è greedy</h2>
@@ -455,7 +458,7 @@ class MySerializer(serializers.ModelSerializer):
 					<h2>Altre cose da guardare</h2>
 					<ul>
 					<li><code>defer()</code> e <code>only()</code></li>
-					<li><code>aggregate()</code>, <code>annotate()</code></li>
+					<li><code>aggregate()</code> e <code>annotate()</code></li>
 					<li><em>Database functions</em> e la documentazione del Database</li>
 					<li><code>FilteredRelation()</code> django &ge; 2</li>
 					<li><code>EXPLAIN</code></li>
@@ -479,7 +482,7 @@ class MySerializer(serializers.ModelSerializer):
 				</section>
 			</div>
 			<div class="footer">
-				<p id="hashtag" class="no-print">#PyconX ‧ @rmistaken</p>
+				<p id="hashtag" class="no-print">#PyConX ‧ @rmistaken</p>
 			</div>
 		</div>
 
