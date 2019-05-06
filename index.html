@@ -171,8 +171,7 @@
 					<h2 class="upper">Misurare richieste lente</h2>
 				</section>
 				<section>
-					<h2>jazzband/django-silk</h2>
-					<!-- FIXME: link repo -->
+					<h2><a href="https://github.com/jazzband/django-silk">jazzband/django-silk</a></h2>
 					<p>Profilazione e introspezione di richieste</p>
 					<p>Online, non in produzione</p>
 				</section>
@@ -189,8 +188,7 @@
                                         <img src="assets/django-silk-sql-query.png" />
                                 </section>
 				<section>
-					<h2>piglei/uwsgi-sloth</h2>
-					<!-- FIXME: link repo -->
+					<h2><a href="https://github.com/piglei/uwsgi-sloth">piglei/uwsgi-sloth</a></h2>
 					<p>Analizza richieste lente dai log</p>
 					<p>Offline, per uWSGI</p>
 					<p>Attenzione alla media!</p>
@@ -202,8 +200,7 @@
 					<h2 class="upper">Misurare <br>consumo memoria</h2>
 				</section>
 				<section>
-					<h2>xrmx/pyuwsgimemhog</h2>
-					<!-- FIXME: link repo -->
+					<h2><a href="https://github.com/xrmx/pyuwsgimemhog">xrmx/pyuwsgimemhog</a></h2>
 					<p>Trova viste con possibili memory leak dai log</p>
 					<p>Offline, per uWSGI</p>
 				</section>
@@ -457,11 +454,21 @@ class MySerializer(serializers.ModelSerializer):
 				<section>
 					<h2>Altre cose da guardare</h2>
 					<ul>
-					<li><code>defer()</code> e <code>only()</code></li>
-					<li><code>aggregate()</code> e <code>annotate()</code></li>
-					<li><em>Database functions</em> e la documentazione del Database</li>
-					<li><code>FilteredRelation()</code> django &ge; 2</li>
-					<li><code>EXPLAIN</code></li>
+					<li><a href="https://docs.djangoproject.com/en/2.2/ref/models/querysets/#defer"><code>defer()</code></a> e <a href="https://docs.djangoproject.com/en/2.2/ref/models/querysets/#only"><code>only()</code></a></li>
+					<li><a href="https://docs.djangoproject.com/en/2.2/ref/models/querysets/#union"><code>union</code></a></li>
+					<li><a href="https://docs.djangoproject.com/en/2.2/ref/models/querysets/#prefetch-related"><code>Prefetch</code></a></li>
+					<li><a href="https://docs.djangoproject.com/en/2.2/ref/models/querysets/#aggregate"><code>aggregate()</code></a> e <a href="https://docs.djangoproject.com/en/2.2/ref/models/querysets/#annotate"><code>annotate()</code></a></li>
+					<li><a href="https://docs.djangoproject.com/en/2.2/ref/models/database-functions/"><em>Database functions</em></a> e la documentazione del Database</li>
+					<li><a href="https://docs.djangoproject.com/en/2.2/ref/models/querysets/#filteredrelation-objects"><code>FilteredRelation()</code></a> django &ge; 2</li>
+					<li><a href="https://www.postgresql.org/docs/current/sql-explain.html"><code>EXPLAIN</code></a></li>
+					</ul>
+				</section>
+				<section>
+					<h2>Letture interessanti</h2>
+					<ul>
+						<li><a href="https://medium.com/@hansonkd/the-dramatic-benefits-of-django-subqueries-and-annotations-4195e0dafb16">The Dramatic Benefits of Django Subqueries and Annotations</a></li>
+						<li><a href="http://books.agiliq.com/projects/django-orm-cookbook/en/latest/introduction.html">Django ORM Cookbook</a></li>
+						<li><a href="https://www.paulox.net/2018/10/01/updating-a-django-queryset-with-annotation-and-subquery/">Updating a Django queryset with annotation and subquery</a></li>
 					</ul>
 				</section>
 				<section>
